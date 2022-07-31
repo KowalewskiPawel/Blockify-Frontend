@@ -1,6 +1,6 @@
 <h1>
 <p align="center">
-  <img src="./frontend/public/logo192.png" width="150" height="150">
+  <img src="./public/logo192.png" width="150" height="150">
   <br>Blockify
 </h1>
   <p align="center">
