@@ -1,46 +1,92 @@
-# Getting Started with Create React App
+<h1>
+<p align="center">
+  <img src="./frontend/public/logo192.png" width="150" height="150">
+  <br>Blockify
+</h1>
+  <p align="center">
+    Take back the ownership of your social content on-chain, and generate a passive income! :)
+    <br />
+    </p>
+</p>
+</br>
+</br>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About The Project
 
-## Available Scripts
+Blockify is a decentralised Platform as a Service, for creating fully decentralised blogs, and gives ownership only to the creator. In this way, you can be sure that you will not lose your conent, even if the application ever goes down still the data will be persisted on the blockchain, Ceramic Protocol, and IPFS. Moreover, to help creators create a passive income from their posts, and incentivize users to use the platform, some actions require pay in Blockify Tokens that are of ERC-20 standard. In this way, the platform can easily generate income for all, maintainers, creators, and even followers. However, to read the blogs, posts, and comments, there is no need to register, pay, or even have a crypto wallet.
 
-In the project directory, you can run:
+The platform works in the following way:
 
-### `npm start`
+1. Creator pays Blockify Tokens to mint his Blog NFT and starts creating posts
+2. From that moment, there is no need to pay anything not even gas fees by the creator
+3. Readers can easily reach the content, just by entering the app and reading all of the content
+4. To interact with the given creator, the blog has to be followed and for that particular action payment in Blockify tokens is required
+5. At the time when someone follows the creator, the tokens are being distributed among the Creator, platform maintainers and even the followers of the given blog
+6. The same applied to comment logic, to comment user has to firstly follow the given Blog
+7. In this way, there is a passive income guaranteed for every side - Maintainers, Creators, and Followers
+## Tech stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The smart contracts are built with Solidity and deployed to the Polygon Mumbai network, later on, The Graph is used to query the data from the blockchain. To store publications, Ceramic Protocol is used as it also provided a decentralised way to store data, plus there is no gas fee required, and it's also faster. Since the publications are stored on Ceramic Protocol which is Blockchain agnostic, in case of moving the platform to any other chain, the publications will be preserved.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Built With
 
-### `npm test`
+- [Hardhat](https://hardhat.org/)
+- [Solidity](https://docs.soliditylang.org/en/v0.8.11/)
+- [Alchemy](https://www.alchemy.com/)
+- [React](https://reactjs.org/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- [Node.js](https://nodejs.org/en/download/)
+- [Metmask](https://metamask.io/)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Install all the dependencies - `yarn`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Create an account on Alchemy, then create a new app and select "Polygon Mumbai" as a network.
 
-### `npm run eject`
+3. Create a `.env` file in the root folder and add the
+   following variables:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+   API_URL=<ALCHEMY_API_URL>
+   API_KEY=<THE_LAST_PART OF_THE_API_URL>
+   PRIVATE_KEY=<YOUR_WALLET'S_PRIVATE_KEY>
+   CONTRACT_ADDRESS=<DEPOLOYED_TOKEN_ADDRESS>
+   POLYGONSCAN_API_KEY=<POLYGONSCAN_API_KEY>
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Hint: You can get your own API key in the alchemy dashboard. The last part can be added after deploying the token.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Compiling the Contract
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+run `npx hardhat compile` command.
 
-## Learn More
+### Deploying Smart Contract
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Run `npx hardhat run scripts/deployBlockifyToken.ts --network mumbai` command, to deploy Token's contract
+2. Run `npx hardhat run scripts/deployBlockify.ts --network mumbai` command, to deploy Blockify
+3. Run `npx hardhat verify "<Blockify_Token_Address>" --network mumbai` command, to verify Blockify Token contract
+4. Run `npx hardhat verify "<Blockify_Address>" --network mumbai` command, to verify Blockify contract
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### The Graph API
+
+1. Run `graph init --index-events` command in the empty folder to create the Graph API
+2. Enter all of the realted info
+3. Run `yarn codegen` to generate schemas
+4. Add `startBlock` value to `subgraph.yaml` file
+5. Run `graph auth` to add The Graph deploy key
+6. Change `undefined` folder name inside of `generated` to `Blockify`
+4. Run `yarn deploy` to deploy the graph
+
+### Frontend
+
+1. Add both BlockifyToken and Blockify abi files to the `abi` folder
+2. Add deployed contracts address to the file inside of `consts` folder
+3. Create `.env` and add `REACT_APP_WEB3_STORAGE=<WEB3_STORAGE_API_KEY>`
+4. Run `yarn start` to start the project
+
+### Live Preview
+
+[Blockify](https://kowalewskipawel.github.io/Blockify/)
